@@ -1,0 +1,30 @@
+Table Clientes {
+  ClienteID int [pk]
+  Nombre varchar
+  Ciudad varchar
+  FechaNacimiento date
+}
+
+Table Pedidos {
+  PedidoID int [pk]
+  ClienteID int
+  Total int
+  FechaPedido date
+}
+
+Table Productos {
+  ProductoID int [pk]
+  Nombre varchar
+  Precio int
+}
+
+Table DetallesPedidos {
+  DetalleID int [pk]
+  PedidoID int
+  ProductoID int
+  Cantidad int
+}
+
+Ref: Pedidos.ClienteID > Clientes.ClienteID
+Ref: DetallesPedidos.PedidoID > Pedidos.PedidoID
+Ref: DetallesPedidos.ProductoID > Productos.ProductoID
