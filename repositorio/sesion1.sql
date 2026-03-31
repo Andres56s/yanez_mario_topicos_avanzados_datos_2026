@@ -125,12 +125,52 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Insertando datos en DetallesPedidos...');
     INSERT INTO DetallesPedidos VALUES (1, 101, 1, 2); -- Pedido 101: 2 Laptops
     INSERT INTO DetallesPedidos VALUES (2, 101, 2, 5); -- Pedido 101: 5 Mouse
+    
+    --Ejercicio sesion 1.1  (1 laptop, 2 mouse)
+
+    INSERT INTO DetallesPedidos VALUES(3,102,1,1) ---creo el id 3, pedido 102, compro 1 laptop
+    INSERT INTO DetallesPedidos VALUES(4,103,2,20) --- creo el id 4, pedido 103, compro 20 mouse
+    INSERT INTO DetallesPedidos VALUES(5,104,1,10) ---creo el id 5, pedido 104, compro 10 laptops
+
     DBMS_OUTPUT.PUT_LINE('Datos insertados en DetallesPedidos.');
 END;
 /
 
 -- Verificar datos
 SELECT * FROM DetallesPedidos;
+
+--SESION 2
+
+
+--Realice 2 sentencias SELECT simples
+SELECT Nombre, Precio FROM Productos WHERE Precio > 100;
+SELECT * FROM Clientes WHERE Ciudad = 'Santiago';
+
+--Realice 2 sentencias SELECT utilizando funciones agregadas
+
+--suma total de ventas por cliente
+SELECT ClienteID, SUM(Total) AS Gasto_Total FROM Pedidos 
+GROUP BY ClienteID;
+
+--promedio de precio de los productos
+SELECT AVG(Precio) AS Precio_Promedio FROM Productos;
+
+--Realice 2 sentencias SELECT utilizando expresiones regulares
+
+SELECT * FROM Clientes WHERE REGEXP_LIKE(Nombre, '^(J|M)');
+SELECT * FROM Productos WHERE REGEXP_LIKE(Nombre, '(o|e)$');
+
+--Cree 2 vistas
+
+--vista cliente con sus pedidos
+CREATE OR REPLACE VIEW Vista_Pedidos_Clientes AS
+SELECT c.Nombre, p.PedidoID, p.Total, p.FechaPedido FROM Clientes c
+JOIN Pedidos p ON c.ClienteID = p.ClienteID;
+
+--vista productos con bajo stock
+CREATE OR REPLACE VIEW Vista_Detalle_Resumen AS
+SELECT d.PedidoID, pr.Nombre AS Producto, d.Cantidad FROM DetallesPedidos d
+JOIN Productos pr ON d.ProductoID = pr.ProductoID;
 
 -- Commit final
 COMMIT;
